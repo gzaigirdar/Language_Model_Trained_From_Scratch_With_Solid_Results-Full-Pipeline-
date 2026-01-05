@@ -1,3 +1,12 @@
+How to use the model:
+Create virtual  enviorment,Install all the packages packages,and  Run the infernce script to chat with the model.
+Steps:
+
+ - python -m venv .llmenv
+ - source .llmvenv/bin/activate
+ - pip install requirement.txt 
+ - python infernce.py 
+
 Project Description
 
 This project aims to train a transformer-based decoder-only model from scratch to generate coherent text and respond to basic, general dialogues.
@@ -18,11 +27,11 @@ Experiment Details
 
 The model was trained for 5 epochs on 200k samples using:
 
-    -Cosine learning rate scheduler with a base learning rate of 0.001
+    Cosine learning rate scheduler with a base learning rate of 0.001
 
-    -bfloat16 precision for faster training
+    bfloat16 precision for faster training
 
-    -Gradient clipping to stabilize training
+    Gradient clipping to stabilize training
 
 Full experiment details are available in experiment.doc within the repository.
 (Note: The training workflow is documented in Best_Model_80t.ipynb.)
@@ -34,15 +43,6 @@ A 41M-parameter model was trained on 200k structured dialogue samples for 5 epoc
 
 The model architecture was implemented from scratch using low-level PyTorch operations, following the GPT-2 design with minor modifications, such as using RMSNorm instead of LayerNorm. (Folder: DecoderOnly_Transformer_Custom_implementation)
 
-
-How to use the model:
-1. Create viratual enviorment
-python -m venv .llmenv
-souce .llmvenv/bin/activate
-2. Install nessisary packages
-pip install requirement.txt 
-3. Run the infernce script to chat with the model
-python infernce.py 
 
 Additionally topk and temp values can set to for diverse output by passing them in the command line
 python infernce.py --Top_K=3 --Temp=0.30
