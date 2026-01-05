@@ -1,5 +1,10 @@
 
 .llm_venv/
+
 .vscode/
+
 /Saved_Data/
+
+/Saved_tokenizer/t5_Tokinzer/
+
 
