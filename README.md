@@ -2,14 +2,17 @@ How to use the model:
 Create virtual  enviorment,Install all the packages packages,and  Run the infernce script to chat with the model.
 Steps:
 
- - python -m venv .llmenv
- - source .llmvenv/bin/activate
- - pip install requirement.txt 
- - python infernce.py 
+    - python -m venv .llmenv
+
+    - source .llmvenv/bin/activate
+
+    - pip install requirement.txt 
+    
+    - python infernce.py 
 
 Project Description
 
-This project aims to train a transformer-based decoder-only model from scratch to generate coherent text and respond to basic, general dialogues.
+This project aims to train a transformer based decoder-only model from scratch to generate coherent text and respond to basic, general dialogues.
 The repository provides a complete, modular pipeline for training a language model, including data preprocessing, tokenization, model architecture implementation, training tools and environment setup, training, evaluation, and inference. Its organized structure makes it easy to train language models with minimal setup.
 
 Dataset and Tokenizer

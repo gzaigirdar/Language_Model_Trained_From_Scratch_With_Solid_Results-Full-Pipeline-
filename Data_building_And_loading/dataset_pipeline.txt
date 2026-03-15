@@ -1,0 +1,64 @@
+Dataset Versions & Pipeline Overview
+=====================================
+
+There are 6 distinct dataset versions in this project.
+
+------------------------------------------------------------------------------
+DATASET VERSIONS
+------------------------------------------------------------------------------
+
+1. pairs_dataset/  —  Raw Dialogue Pairs
+   - Created by  : Data_building_And_loading/Dialogue_data/Load_data.py
+   - Columns     : prompt, response  (raw, untokenized text)
+   - Sources     : DailyDialog, General_Conversation_Mixed_Dataset,
+                   Kaggle dialogs, hardcoded samples,
+                   everyday-conversations-llama3.1-2k
+
+2. Pairs_Dataset/  —  Older/Earlier Save (unused)
+   - Not referenced in any script
+   - Smaller than pairs_dataset (2 shards vs 6), likely an earlier version
+
+3. processedDataset/  —  Tokenized Dialogue Pairs
+   - Created by  : Data_building_And_loading/Dialogue_data/preprocess_data.py
+   - Input       : pairs_dataset
+   - Columns     : input_ids, text_sample
+   - Format      : <bos> <user> {prompt} <eos> <bot> {response} <eos>
+   - Size        : ~104,161 rows
+   - Used by     : SFT_tiny_chat.ipynb, SFT_tiny_stories.ipynb,
+                   Combined_dataset.ipynb
+
+4. PretrainedProccessedData/  —  Tokenized TinyStories
+   - Created by  : Data_building_And_loading/Tiny_stories/PreTrain_data.py
+   - Source      : roneneldan/TinyStories  (500,000 samples)
+   - Columns     : input_ids, raw_text
+   - Format      : <bos> {story text} <eos>
+   - Used by     : Tiny_stories_41m_285_Pretrained.ipynb
+
+5. Tiny_chat_pretrained_dataset/  —  Tokenized Full TinyChat (1M)
+   - Created by  : Data_building_And_loading/Tiny_chat/tiny_chat_pretraining.py
+   - Source      : starhopp3r/TinyChat  (1,000,000 rows)
+   - Columns     : input_ids, raw_text
+   - Format      : <bos> <user>...<bot>... <eos>
+   - Used by     : Tiny_chat_Data_Model.ipynb
+
+6. Combineed_Pairs_Dataset/  —  Final Combined Dataset
+   - Created by  : Data_building_And_loading/Combined_dataset.ipynb
+   - Input       : processedDataset (~104k rows)
+                 + TinyChat 12k subset re-tokenized as <user>/<bot> pairs
+   - Columns     : input_ids, text_sample
+   - Size        : ~196,774 rows
+   - Used by     : Model_Training.ipynb  (trains the main/best model)
+
+------------------------------------------------------------------------------
+PIPELINE SUMMARY
+------------------------------------------------------------------------------
+
+ Raw Sources (DailyDialog, CosmosAI, Kaggle, hardcoded, everyday-convos)
+     └──> pairs_dataset  (raw pairs)
+              └──> processedDataset  (tokenized)  ──────────────────────┐
+                                                                         ├──> Combineed_Pairs_Dataset ──> Main Conversational Model
+ TinyChat 12k subset  (re-tokenized as <user>/<bot> pairs) ─────────────┘
+
+ TinyStories 500k ──> PretrainedProccessedData ──> Story Generator Model
+
+ TinyChat full 1M  ──> Tiny_chat_pretrained_dataset ──> TinyChat Conversational Model

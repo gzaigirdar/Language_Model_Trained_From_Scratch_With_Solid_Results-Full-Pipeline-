@@ -18,7 +18,7 @@ model_config = {
         "FeedForward_size": 2000,
         "Context_size": 200
     }
-tokenizer_path = '../Final_version_SLM/Saved_tokenizer/t5_Tokinzer'
+tokenizer_path = 'Saved_tokenizer/t5_Tokenizer'
 tokenizer = AutoTokenizer.from_pretrained(tokenizer_path,use_fast=True)
 def clean_text(text):
     text = text.lower()
