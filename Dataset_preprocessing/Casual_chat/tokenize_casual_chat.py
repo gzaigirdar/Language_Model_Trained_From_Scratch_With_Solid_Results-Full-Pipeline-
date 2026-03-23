@@ -1,10 +1,10 @@
 # %%
-from datasets import load_from_disk
+from datasets import load_from_disk,concatenate_datasets
 
-saved_path = '/home/gz/Documents/Full Pipeline(LLM)/Saved_Data/pairs_dataset'
+saved_path = '../../Saved_Data/Casual_chat/casual_chat_raw_dataset'
 
 pairs_dataset = load_from_disk(saved_path)
-
+print(pairs_dataset)
 for sample in pairs_dataset:
     print(sample['prompt'])
     print(sample['response'])
@@ -38,7 +38,7 @@ def preprocess_func(batch,tokenizer,clean_text):
 
     return{
         'input_ids': tokens['input_ids'],
-        'text_sample': input_samples
+        'raw_text': input_samples
 
     }
 
@@ -46,7 +46,7 @@ def preprocess_func(batch,tokenizer,clean_text):
 # %%
 from transformers import AutoTokenizer
 # load the saved tokenizer 
-tokenizer_path = '/home/gz/Documents/Full Pipeline(LLM)/Saved_tokenizer/t5_Tokinzer'
+tokenizer_path = '../../Tokenizer/Saved_tokenizer/t5_Tokenizer'
 
 tokenizer = AutoTokenizer.from_pretrained(tokenizer_path,use_fast=False)
 
@@ -58,7 +58,7 @@ preprocessed_dataset = pairs_dataset.map(lambda batch: preprocess_func(batch,tok
 # %%
 for sample in preprocessed_dataset:
     print(sample['input_ids'])
-    print(sample['text_sample'])
+    print(sample['raw_text'])
     break
 
 # %%
@@ -67,9 +67,21 @@ preprocessed_dataset = preprocessed_dataset.remove_columns(['prompt','response']
 for sample in preprocessed_dataset:
     print(sample)
     break
+# %%
+
+tiny_chat_ds = load_from_disk('../../Saved_Data/Tiny_chat__dataset_tokenized')
+tiny_chat_ds = tiny_chat_ds.shuffle(seed=42)
+tiny_chat_ds = tiny_chat_ds.select(range(92613))
+print(tiny_chat_ds)
 
 # %%
-processed_path = '/home/gz/Documents/Full Pipeline(LLM)/Saved_Data/processedDataset'
+print(preprocessed_dataset)
+preprocessed_dataset = concatenate_datasets([preprocessed_dataset,tiny_chat_ds])
+print(preprocessed_dataset)
+# %%
+print(preprocessed_dataset['raw_text'][11600])
+# %%
+processed_path = '../../Saved_Data/Casual_chat/Casual_chat_tokenized_Dataset'
 
 preprocessed_dataset.save_to_disk(processed_path)
 

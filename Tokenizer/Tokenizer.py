@@ -15,7 +15,7 @@ special_tokens =  {
 tokenizer.add_special_tokens(special_tokens)
 
 # %%
-save_path = '/home/gz/Documents/Full Pipeline(LLM)/Saved_tokenizer/t5_Tokinzer'
+save_path = 'Saved_tokenizer/t5_Tokenizer'
 tokenizer.save_pretrained(save_path)
-
+ 
 # %%

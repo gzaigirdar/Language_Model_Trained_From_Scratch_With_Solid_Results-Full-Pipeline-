@@ -1,7 +1,20 @@
 Dataset Versions & Pipeline Overview
 =====================================
 
-There are 6 distinct dataset versions in this project.
+PIPELINE SUMMARY
+------------------------------------------------------------------------------
+
+ Raw Sources (DailyDialog, CosmosAI, Kaggle, hardcoded, everyday-convos)
+     └──> pairs_dataset  (raw pairs)
+              └──> processedDataset  (tokenized)  ──────────────────────┐
+                                                                         ├──> Combineed_Pairs_Dataset ──> casual chat Model
+ TinyChat 12k subset  (re-tokenized as <user>/<bot> pairs) ─────────────┘
+
+ TinyStories 500k ──> PretrainedProccessedData ──> Story Generator Model
+
+ TinyChat full 1M  ──> Tiny_chat_pretrained_dataset ──> TinyChat Conversational Model
+
+
 
 ------------------------------------------------------------------------------
 DATASET VERSIONS
@@ -14,11 +27,8 @@ DATASET VERSIONS
                    Kaggle dialogs, hardcoded samples,
                    everyday-conversations-llama3.1-2k
 
-2. Pairs_Dataset/  —  Older/Earlier Save (unused)
-   - Not referenced in any script
-   - Smaller than pairs_dataset (2 shards vs 6), likely an earlier version
 
-3. processedDataset/  —  Tokenized Dialogue Pairs
+2. processedDataset/  —  Tokenized pairs_dataset
    - Created by  : Data_building_And_loading/Dialogue_data/preprocess_data.py
    - Input       : pairs_dataset
    - Columns     : input_ids, text_sample
@@ -50,15 +60,3 @@ DATASET VERSIONS
    - Used by     : Model_Training.ipynb  (trains the main/best model)
 
 ------------------------------------------------------------------------------
-PIPELINE SUMMARY
-------------------------------------------------------------------------------
-
- Raw Sources (DailyDialog, CosmosAI, Kaggle, hardcoded, everyday-convos)
-     └──> pairs_dataset  (raw pairs)
-              └──> processedDataset  (tokenized)  ──────────────────────┐
-                                                                         ├──> Combineed_Pairs_Dataset ──> Main Conversational Model
- TinyChat 12k subset  (re-tokenized as <user>/<bot> pairs) ─────────────┘
-
- TinyStories 500k ──> PretrainedProccessedData ──> Story Generator Model
-
- TinyChat full 1M  ──> Tiny_chat_pretrained_dataset ──> TinyChat Conversational Model

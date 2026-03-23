@@ -1,0 +1,13 @@
+During the trainining the train and validation loss decreased smooth and closely followed one another. There was no obviouse sign of overfitting, which was good indicator 
+that model was learnin general patterns of naturual language well. The maxium train loss happend in epoch with loss 3.0 and train loss reached it's lowest in last epoch
+when it decreased to 1.70. The evaualtion went form 2.62 to 1.93. The pattern shows no signs of overfitting but slight sign of under fitting due do validation consistantly 
+being lower than train loss, but that's due to the regularization technizques such label smoothing,weight decay, dropout that was applied to prevent the model from over fitting.
+Overall the model learned smoothly during the trianing smothly. Towards the last 2 epochs, there was sign of convergence because the rate decrase in validation set slows down.
+
+
+The perplexity score was calcualted for each validation steps to see model's uncertainy in predicting tokens over the course of training. The scors from epoch 1 to 5 
+showed that the model became less uncertain predicting correct tokens as training progressed and model learned the general patterns better. The perplexity score went from 
+13.
+
+In the fourth epoch, train and valid loss almost converged as train and valid loss was 1.97 and 1.99. The following epoch, the validation loss were smaller than train loss, which
+started to show sign of overfitting. which was good place to stop the training. 

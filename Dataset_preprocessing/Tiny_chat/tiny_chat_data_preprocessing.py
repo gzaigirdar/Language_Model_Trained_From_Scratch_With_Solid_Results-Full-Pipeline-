@@ -41,7 +41,7 @@ def preprocess_func(batch, tokenizer):
 # %%
 from transformers import AutoTokenizer
 # load the saved tokenizer 
-tokenizer_path = '/home/gz/Documents/Full Pipeline(LLM)/Saved_tokenizer/t5_Tokinzer'
+tokenizer_path = '../../Tokenizer/Saved_tokenizer/t5_Tokenizer'
 
 tokenizer = AutoTokenizer.from_pretrained(tokenizer_path,use_fast=True)
 # %%
@@ -85,7 +85,8 @@ print(f"Maximum tokens: {max_len}")
 
 # %%
 print(tokenizer.decode(1))
+print(ds['input_ids'][100])
 # %%
 
-ds.save_to_disk('/home/gz/Documents/Full Pipeline(LLM)/Saved_Data/Tiny_chat_pretrained_dataset')
+ds.save_to_disk('../../Saved_Data/Tiny_chat__dataset_tokenized')
 # %%

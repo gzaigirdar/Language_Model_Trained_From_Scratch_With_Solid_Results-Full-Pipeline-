@@ -64,7 +64,7 @@ print(len(pairs))
 # %%
 # load kaggle text data and extract pairs
 print(len(pairs))
-kaggle_data_path = '/home/gz/Documents/Full Pipeline(LLM)/Saved_Data/Kaggle_dialogs_data.txt'
+kaggle_data_path = '../../Saved_Data/Kaggle/Kaggle_dialogs_data.txt'
 
 with open(kaggle_data_path,'r') as f:
     lines = f.readlines()
@@ -134,6 +134,6 @@ for sample in pairs_dataset:
 #----------------------------------------------------------------------
 # %% 
 # save the parirs dataset 
-saved_path = '/home/gz/Documents/Full Pipeline(LLM)/Saved_Data/pairs_dataset'
+saved_path = '../../Saved_Data/Casual_chat/casual_chat_raw_dataset'
 pairs_dataset.save_to_disk(saved_path)
 # %%

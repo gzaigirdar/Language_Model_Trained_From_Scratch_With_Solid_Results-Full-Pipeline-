@@ -1,5 +1,5 @@
 
-.llm_venv/
+.venv/
 
 .vscode/
 
@@ -7,4 +7,11 @@
 
 /Saved_tokenizer/t5_Tokinzer/
 
+/Extra Models
 
+/Extra experiments 
+
+Archive/
+Images/
+
+Tokenizer/Saved_tokenizer
