@@ -3,7 +3,7 @@
 
 .vscode/
 
-/Saved_Data/
+/Saved_Data/*
 
 Tokenizer/Saved_tokenizer
 
