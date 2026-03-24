@@ -1,55 +1,83 @@
-How to use the model:
-Create virtual  enviorment,Install all the packages packages,and  Run the infernce script to chat with the model.
-Steps:
+### Project Description
+This project focuses on training a decoder-only transformer language model from scratch under limited computational resources and dataset size. The objective is to generate coherent text and handle basic conversational tasks.
 
-    - python -m venv .llmenv
+The repository provides a complete end-to-end pipeline, including:
+Data collection and preprocessing
+Tokenization
+Model architecture implementation (low-level PyTorch)
+Training setup and utilities
+Evaluation and inference
+Experiments
 
-    - source .llmvenv/bin/activate
+Three separate experiments were conducted, each training an independent model with its own dataset, hyperparameters, and configuration:
+Casual Chat – informal dialogue generation
+Tiny Chat – short conversational response generation
+Story Generator – generates short stories from a prompt
 
-    - pip install requirement.txt 
-    
-    - python infernce.py 
+### Dataset and Tokenizer
+Three separate datasets were constructed for the experiments, each corresponding to one model (Casual Chat, Tiny Chat, Story Generator). All datasets were sourced from publicly available corpora and processed using a consistent pipeline.
 
-Project Description
+Sources
+Hugging Face datasets (e.g., TinyChat, TinyStories, conversational datasets)
+Kaggle dataset(s)
+Small custom-added samples
+Preprocessing
 
-This project aims to train a transformer based decoder-only model from scratch to generate coherent text and respond to basic, general dialogues.
-The repository provides a complete, modular pipeline for training a language model, including data preprocessing, tokenization, model architecture implementation, training tools and environment setup, training, evaluation, and inference. Its organized structure makes it easy to train language models with minimal setup.
+Each dataset was standardized using the same steps:
 
-Dataset and Tokenizer
+Replace role markers with unified tokens (e.g., <user>, <bot>)
+Convert text to lowercase
+Trim unnecessary whitespace
+Separate punctuation (. ? ! , ;) into individual tokens
+Add sequence boundary tokens: <start> and <end>
+Tokenization
 
-The training data consists of multiple small datasets, including ConvAI, General_Conversation_Mixed_Dataset, everyday-conversations-llama3.1-2k, and 100k samples from TinyChat, all sourced from Hugging Face. Additionally, one dataset was obtained from Kaggle, and small custom hardcoded samples were added.(Note: check data.info for more details on dataset and sources!)
-Full dataset details can be found in dataset.info within the data building and loading folder.
-(Note: For clarity, this collection is referred to as the combined dataset.)
-Google's T5 small tokenizer from Hugging Face was chosen for its effective handling of empty and trailing spaces.
+All datasets were tokenized using the T5-small SentencePiece tokenizer.
 
-Motivation
+#### Computinal Resources:
+Gpu: RTX 4060 8 GB, System RAM: 32 GB , Processor: Intel Core i5-13400F (16 logical cores, up to 4.6 GHz) OS: Linux Ubuntu
 
-The goal of this project was to build a language model entirely from scratch capable of generating coherent text. Most existing resources do not show clear way to train a model from scartch to generate reasonable ouput. While I have prior experience with transformer architectures and training, this is my first complete training a transformer based  model from scartch, which helped solidify my understanding of language models and transformer mechanics.
+#### Evaluation metrics and methods:
 
-Experiment Details
+Both training and validation splits to monitor learning behavior and overfitting.
+Perplexity to measure token prediction quality.
+Custom prompts to evaluate coherence and generation quality
 
-The model was trained for 5 epochs on 200k samples using:
+#### Training techniques applied:
 
-    Cosine learning rate scheduler with a base learning rate of 0.001
+Dropout
+Weight decay
+Learning rate scheduling
+bfloat16 precision (for faster training)
+Gradient clipping (for stability)
 
-    bfloat16 precision for faster training
+#### Detailed experiment configurations and results are available in:
+Full details about the expeiments regarding training,dataset preprocessing, evaluation,results,inference can be found in Report.pdf
+All Training Notebooks can be found /Training Notebooks
+All Evaluation Notebooks can be found in /Evaluation Notebooks 
 
-    Gradient clipping to stabilize training
+#### How To Use The Trained Models:
 
-Full experiment details are available in experiment.doc within the repository.
-(Note: The training workflow is documented in Best_Model_80t.ipynb.)
+Create and activate  virtual environment:
+python -m venv .venv 
+source .venv/bin/activate
+Run inference script for one of the models:
+    Casual Chat:
+        python Casual_chat_Inf.py
+    Tiny Chat:
+        python Tiny_Chat_Inf.py 
+    Story Gen:
+        python Story_Gen_Inf.py
+Additionally, Top_K and Temperature can be passed in the command line for each script.
+Example: python Casual_chat_Inf.py –Top_K 20 –Temp 0.60
+(double dash before the parameter name)
 
-Results
 
-A 41M-parameter model was trained on 200k structured dialogue samples for 5 epochs. Despite the limited dataset size, the model achieved a final perplexity of 6 and demonstrated the ability to generate coherent and meaningful responses to prompts. Sample outputs can be found at the end of the notebook.
-(Note: Evaluation details are in evaluation.ipynb.)
-
-The model architecture was implemented from scratch using low-level PyTorch operations, following the GPT-2 design with minor modifications, such as using RMSNorm instead of LayerNorm. (Folder: DecoderOnly_Transformer_Custom_implementation)
+#### Results:
+All three experiments produced strong results. Each model was able to generate coherent text and perform according to its specific training objective. Casual Chat and Tiny Chat successfully handled conversational prompts, while Story Generator produced short, contextually relevant stories. Minor inconsistencies occasionally appeared due to limited dataset size and training resources, but overall, each model demonstrated the ability to generate task-aligned, meaningful output. 
 
 
-Additionally topk and temp values can set to for diverse output by passing them in the command line
-python infernce.py --Top_K=3 --Temp=0.30
-
+##### Casual Chat output on the Custom Test prompt:
 
 Sample Outputs from the MainModel: here are some response to basic dialogue with greedy decoding
 
@@ -73,24 +101,9 @@ Sample Outputs from the MainModel: here are some response to basic dialogue with
 
 The model demonstrates an understanding of sentence structure and grammar, producing mostly meaningful responses, but its capabilities are constrained by the dataset and model size.
 
+-----------------------------------------------------------------------------------------------------
 
-
-
-Other Experiments: There were other experiments were run such as trainging a 41m model to generate short stories using tiny stories dataset, which showed strong result as well.The tinychat stories model were fined tuned with combined dataset to generate convo. The third experiment was trainig model using 1 millon samples of tiny chat(without any other sourc), which showed very strong flunecy and meaning full response to fomarl dialogue, but it didn't to well as well combined dataset model in general everyday dialouge.
-
-
-Tiny chat model can be run using:
-
-python Tiny_chat_inf.py 
-
-Tiny story generator can be run using:
-
-python gen_story_inf.py
-
-
-________________________________________________________________________________________________________________________________________________
-
-Tiny Chat Model output:
+##### Tiny Chat outputon the Custom Test prompt::
 
     | Input                                                | Output                                                                              |
     | ---------------------------------------------------- | ----------------------------------------------------------------------------------- |
@@ -100,10 +113,10 @@ Tiny Chat Model output:
     | do you like reading books or watching movies better? | i enjoy reading books because they take me to different worlds.                     |
     | i'm doing well, how about you?                       | i am feeling a bit bad today, thank you for asking.                                 |
 
-The model demonstrated strong fluency in grammar and generated meaningful responses; however, it struggled with very informal dialogue, likely because the TinyChat dataset mostly contains formal conversations
+The model demonstrated strong fluency in grammar and generated meaningful responses; however, it struggled with very informal dialogue, likely because the TinyChat dataset mostly contains formal conversations.
 __________________________________________________________________________________________________________________________________________________
 
-Tiny Stories Model ouput:
+##### Story Generator Model's response on the Custom Test prompt:
 
 Prompt 
 once upon a time there was this planet
@@ -114,14 +127,7 @@ Once upon a time there was this planet. It was very big and very big. One day, a
 Prompt: there was a storm
 
 Story:  
-There was a storm. It was very loud and scary. The wind was blowing and the rain was pouring down. The wind was so strong that it made the rain drop down. The rain was so strong that it made the ground shake. The rain was so strong that it made the ground shake even harder. The rain kept falling and the ground shook even harder. The rain kept falling and the ground shook even harder. The rain kept falling and the ground shook even harder. The rain kept falling and the ground shook even harder. The rain kept falling and the ground shook until it was so heavy that it was almost like it was shaking. The rain stopped and the sun came out. The ground was still shaking. The storm was so strong that it made the ground shake even harder. The rain stopped and the ground was quiet again. The sun came out and the ground was dry again
-
-Prompt: 
-In a magical jungle, animals could talk to each other
-
-Story:
-In a magical jungle, animals could talk to each other. One day, a little monkey named Jack was walking through the jungle. He heard a strange noise coming from the trees. He stopped and listened carefully. He heard a voice coming from the trees. It said, "Hello, Jack! I'm a monkey. I'm looking for something to eat." Jack was surprised. He asked, "What are you looking for?" The monkey replied, "I'm looking for some food. I'm looking for some." Jack smiled and said, "I can help you. Follow me!" So Jack and the monkey went on an adventure. They walked through the jungle, looking for food. After a while, they found a big, juicy apple. Jack said, "This apple is so delicious! Thank you, monkey!" The monkey smiled and said, "You're welcome, Jack. I'm glad I could help." And with that, Jack and the monkey went back home.
-
+There was a storm. It was very loud and scary. The wind was blowing and the rain was pouring down. The wind was so strong that it made the rain drop down. The rain was so strong that it made the ground shake. The rain was so strong that it made the ground shake even harder. The rain kept falling and the ground shook even harder. The rain kept falling and the ground shook even harder. The rain kept falling and the ground shook even harder. The rain kept falling and the ground shook even harder. The rain kept falling and the ground shook until it was so heavy that it was almost like it was shaking. The rain stopped and the sun came out. The ground was still shaking. The storm was so strong that it made the ground shake even harder. The rain stopped and the ground was quiet again. The sun came out and the ground was dry again.
 
 
 The model generates fully coherent and grammatically correct sentences with a reasonable narrative, but it is limited to short and simple stories, as the Tiny Stories dataset consists of brief children’s stories.
