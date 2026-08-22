@@ -1,0 +1,25 @@
+Training Tools - info
+=====================
+
+training_tools.py
+-----------------
+Train_tools class - manages training setup from a config dict.
+
+Config keys:
+  learning_rate         : AdamW learning rate
+  Label_smoothing       : CrossEntropyLoss label smoothing factor
+  GradAccumulation_steps: Gradient accumulation steps
+  Weight_decay          : AdamW weight decay
+  warmupsteps_percentage: % of total steps used for warmup (0.0-1.0)
+  Epochs                : Number of training epochs
+  Num_batches           : Total batches per epoch
+  ignore_index          : Token ID to ignore in loss computation
+
+Methods:
+  getTools(model_params) -> (loss_fn, optimizer, lr_scheduler)
+    - Creates AdamW optimizer
+    - Creates cosine schedule with linear warmup (0.5 cycles)
+    - Returns loss function, optimizer, and scheduler
+
+  Total training steps = (Num_batches // GradAccumulation_steps) * Epochs
+  Warmup steps = Total_training_steps * warmup_steps_percentage

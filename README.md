@@ -124,12 +124,5 @@ once upon a time there was this planet
 Story:
 Once upon a time there was this planet. It was very big and very big. One day, a little girl named Lucy wanted to explore the planet. She asked her mom if she could go. Her mom said yes, so Lucy ran outside. She saw the big planet and it was very big. She wanted to explore it. So Lucy started to climb the big planet. She climbed and climbed until she reached the top. She looked around and saw lots of things. She saw a big tree and some birds flying in the sky. She was so happy! Lucy kept climbing until she reached the top. She looked around and saw the big planet. She was so excited! She wanted to explore it. So she climbed down the big planet and ran back home. She had a lot of fun exploring the big planet.
 
-Prompt: there was a storm
-
-Story:  
-There was a storm. It was very loud and scary. The wind was blowing and the rain was pouring down. The wind was so strong that it made the rain drop down. The rain was so strong that it made the ground shake. The rain was so strong that it made the ground shake even harder. The rain kept falling and the ground shook even harder. The rain kept falling and the ground shook even harder. The rain kept falling and the ground shook even harder. The rain kept falling and the ground shook even harder. The rain kept falling and the ground shook until it was so heavy that it was almost like it was shaking. The rain stopped and the sun came out. The ground was still shaking. The storm was so strong that it made the ground shake even harder. The rain stopped and the ground was quiet again. The sun came out and the ground was dry again.
-
-
-The model generates fully coherent and grammatically correct sentences with a reasonable narrative, but it is limited to short and simple stories, as the Tiny Stories dataset consists of brief children’s stories.
 
 ________________________________________________________________________________________________________________________________________________

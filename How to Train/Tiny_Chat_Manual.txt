@@ -1,0 +1,69 @@
+Steps to Replicate the Experiment
+Note: make sure you are inside the Project directory in the terminal before running any of the
+scripts. 
+
+1. Set up the Python environment and install the dependencies.
+
+    Create and activate the Python environment, then install all dependencies listed in the requirements file.
+
+    Commands:
+
+    python3 -m venv venv
+
+    source venv/bin/activate
+
+    pip install -r requirements.txt
+
+2. Load the built-in SentencePiece tokenizer from Hugging Face.
+    Execute the following script:
+
+    Path: Tokenizer/Tokenizer.py
+
+    Command:
+
+    python3 Tokenizer/Tokenizer.py
+
+3. Load and preprocess the data.
+
+    Execute the following scripts in the specified order.
+
+    Tiny Chat data preprocessing
+
+        Script: tiny_chat_data_preprocessing.py
+
+        Path: Dataset_preprocessing/Tiny_chat/tiny_chat_data_preprocessing.py
+
+        Command:
+
+        python3 Dataset_preprocessing/Tiny_chat/tiny_chat_data_preprocessing.py
+
+    
+
+4. Train the model.
+
+Open the following notebook:
+
+Path: Training Notebooks/Tiny_Chat_Training.ipynb
+
+Run all cells up to the training cell to start training the model.
+
+Note: The notebook is organized into data loading, data processing, collate batching, training, and inference sections. It is recommended that you skim through the notebook before starting the training process to become familiar with the workflow.
+
+The training time depends on the GPU's capabilities and whether a GPU is used at all. 
+This model was trained with dataset of 1 millon samples for one epoch, which took about 4 hours 
+in RTX 4060 8gb vram. 
+
+
+It is also recommended that you read both Implementation_info.txt and Utils_info.txt for details 
+about the custom Transformer architecture, optimizer and scheduler configuration,
+and training parameters such as the warm-up percentage and total number of batches per epoch.
+    
+    Custom Transformer details:  
+    
+    Text file: Implementation_info.txt
+    Path: DecoderOnly_Transformer_Custom_implementation/Implementation_info.txt
+
+    Training Utils info:
+    
+    Text file: Utils_info.txt
+    Path: Training_utils/Utils_info.txt

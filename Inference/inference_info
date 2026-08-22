@@ -1,0 +1,39 @@
+1. Set up the Python environment and install the dependencies.
+
+Create and activate the Python environment, then install all dependencies listed in the requirements file.
+
+Commands:
+
+python3 -m venv venv
+
+source venv/bin/activate
+
+pip install -r requirements.txt
+
+2. Load the built-in SentencePiece tokenizer from Hugging Face.
+    Execute the following script:
+
+    Path: Tokenizer/Tokenizer.py
+
+    Command:
+
+    python3 Tokenizer/Tokenizer.py
+
+
+3. 
+  To use Casual chat:
+  
+  Command: Python3 Casual_Chat_Inf.py 
+
+  To use Tiny Chat:
+
+  Command: Python3 Tiny_Chat_Inf.py
+
+
+  To use Story Gen: 
+
+  Command: Python3 Story_Gen_Inf.py
+
+
+Note: make sure you are inside the Project directory in the terminal before running any of the
+scripts. 

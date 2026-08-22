@@ -1,0 +1,83 @@
+Steps to Replicate the Experiment
+Note: make sure you are inside the Project directory in the terminal before running any of the
+scripts. 
+
+
+1. Set up the Python environment and install the dependencies.
+
+Create and activate the Python environment, then install all dependencies listed in the requirements file.
+
+Commands:
+
+python3 -m venv venv
+
+source venv/bin/activate
+
+pip install -r requirements.txt
+
+2. Load the built-in SentencePiece tokenizer from Hugging Face.
+    Execute the following script:
+
+    Path: Tokenizer/Tokenizer.py
+
+    Command:
+
+    python3 Tokenizer/Tokenizer.py
+
+3. Load and preprocess the data.
+
+    Execute the following scripts in the specified order.
+
+    3.1. Tiny Chat data preprocessing
+
+        Script: tiny_chat_data_preprocessing.py
+
+        Path: Dataset_preprocessing/Tiny_chat/tiny_chat_data_preprocessing.py
+
+        Command:
+
+        python3 Dataset_preprocessing/Tiny_chat/tiny_chat_data_preprocessing.py
+
+    3.2. Load Casual Chat data
+
+        Script: load_data.py
+
+        Path: Dataset_preprocessing/Casual_chat/Load_data.py
+
+        Command: 
+        python3 Dataset_preprocessing/Casual_chat/Load_data.py
+
+    3.3. Tokenize Casual Chat data
+
+        Script: tokenize_casual_chat.py
+
+        Path: Dataset_preprocessing/Casual_chat/tokenize_casual_chat.py
+
+        Command:
+        python3 Dataset_preprocessing/Casual_chat/tokenize_casual_chat.py
+
+4. Train the model.
+
+Open the following notebook:
+
+Path: Training Notebooks/Casual_chat_Training.ipynb
+
+Run all cells up to the training cell to start training the model.
+
+Note: The notebook is organized into data loading, data processing, collate batching, training, and inference sections. It is recommended that you skim through the notebook before starting the training process to become familiar with the workflow.
+the training time depends on the GPU's capabilities and whether a GPU is used at all. However, the experiment is feasible on a consumer PC within a reasonable amount of time. For reference, it took approximately 2 hours to train on an NVIDIA RTX 4060 with 8 GB of VRAM.
+
+
+It is also recommended that you read both Implementation_info.txt and Utils_info.txt for details 
+about the custom Transformer architecture, optimizer and scheduler configuration,
+and training parameters such as the warm-up percentage and total number of batches per epoch.
+    
+    Custom Transformer details:  
+    
+    Text file: Implementation_info.txt
+    Path: DecoderOnly_Transformer_Custom_implementation/Implementation_info.txt
+
+    Training Utils info:
+    
+    Text file: Utils_info.txt
+    Path: Training_utils/Utils_info.txt

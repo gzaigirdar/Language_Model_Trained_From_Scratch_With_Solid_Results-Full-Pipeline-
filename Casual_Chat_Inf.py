@@ -18,7 +18,7 @@ model_config = {
         "FeedForward_size": 2000,
         "Context_size": 80
     }
-tokenizer_path = 'Saved_tokenizer/t5_Tokenizer'
+tokenizer_path = 'Tokenizer/Saved_tokenizer/t5_Tokenizer'
 tokenizer = AutoTokenizer.from_pretrained(tokenizer_path,use_fast=True)
 def clean_text(text):
     text = text.lower()
@@ -30,10 +30,10 @@ def clean_text(text):
 
 
 
-model_path ="Saved_Models/Full_trained_Model/80t_41m_b2_wo_pre.pth"
+model_path ="Saved_Models/Casual_Chat_Model/80t_41m_b2_wo_pre.pth"
 device = ('cuda' if torch.cuda.is_available() else 'cpu')
 builder = BuildModel()
-model = builder.createModel(model_config,Model_type='None')
+model = builder.createModel(model_config,Model_type='gmodel2')
 model.to(device)
 
 builder.load_weights(path=model_path)

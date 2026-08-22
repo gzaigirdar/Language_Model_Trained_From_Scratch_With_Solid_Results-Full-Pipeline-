@@ -1,0 +1,106 @@
+Decoder-Only Transformer - Custom Implementation
+=================================================
+
+Architecture Overview
+---------------------
+This is a GPT-style decoder-only transformer built from scratch in PyTorch.
+It is designed for causal language modeling where the model learns to predict
+the next token given a sequence of previous tokens.
+
+The architecture follows the "pre-norm" design pattern: LayerNorm (RMSNorm)
+is applied BEFORE the attention and feedforward sublayers, not after. This
+helps with training stability for deeper networks.
+
+Model Classes
+-------------
+- GModel: Main model with weight tying between the token embedding and the
+  final linear output layer. This reduces parameter count and often improves
+  generalization.
+- GModel2: Same architecture but without weight tying. The output linear layer
+  has its own independent weights (bias=True).
+
+Key Design Choices
+------------------
+- RMSNorm: Used instead of LayerNorm. Slightly faster and empirically
+  comparable in performance. No bias term, only a learnable scale.
+- Weight Tying: GModel ties the embedding weights to the output projection
+  weights. This means the model learns shared representations for input and
+  output tokens.
+- Causal Masking: Uses lower-triangular mask (torch.tril) to prevent attending
+  to future tokens. Combined with padding mask to ignore padded tokens.
+- Sinusoidal Positional Encoding: Fixed positional encoding using sin/cos
+  functions. Registered as a buffer (not a parameter) and supports variable
+  sequence lengths up to max_seq_length.
+- Embedding Scaling: Embeddings are scaled by sqrt(d_model) before adding
+  positional encoding, matching the original Transformer paper.
+- Weight Initialization: Normal distribution (mean=0.0, std=0.02) for all
+  linear and embedding layers. Biases initialized to zero.
+
+Module Breakdown
+----------------
+Transformer.py
+  - GModel / GModel2: Top-level model class
+  - Takes input token IDs and pad_token, creates causal+pad mask, runs through
+    transformer blocks, outputs logits over vocabulary.
+
+MultiHeadAttention.py
+  - Scaled dot-product multi-head attention
+  - Q, K, V projections via nn.Linear
+  - Splits heads by reshaping (batch, seq_len, d_model) -> (batch, num_heads, seq_len, dk)
+  - Attention scores masked with -inf for masked positions
+  - Dropout applied to attention probabilities before weighted sum
+
+TransformerBlock.py
+  - Single transformer block: RMSNorm -> MultiHeadAttention -> residual -> RMSNorm -> FFN -> residual
+  - Pre-norm design for better training stability
+
+PositionalEncoding.py
+  - Sinusoidal positional encoding
+  - pe[:, 0::2] = sin(position * div_term)
+  - pe[:, 1::2] = cos(position * div_term)
+  - Supports up to max_seq_length positions
+
+PointwiseFF.py
+  - Two-layer feedforward network: d_model -> d_ff -> d_model
+  - Uses GELU activation (smoother than ReLU, better for transformers)
+  - Dropout between layers
+
+RMSNorm.py
+  - Root Mean Square Layer Normalization
+  - rms = sqrt(mean(x^2))
+  - output = scale * x / (rms + eps)
+  - Learnable scale parameter, no bias
+
+Model Parameters
+----------------
+  vocab_size     : Size of the tokenizer vocabulary
+  d_model        : Embedding and hidden dimension size
+  num_heads      : Number of attention heads (d_model must be divisible by num_heads)
+  num_layers     : Number of transformer blocks
+  d_ff           : Inner dimension of feedforward network (typically 4x d_model)
+  max_seq_length : Maximum sequence length (determines positional encoding size)
+  dropout        : Dropout rate applied throughout the model
+
+Default parameter counts (from test.py):
+  vocab_size=20, d_model=20, num_heads=2, num_layers=1, d_ff=1,
+  max_seq_length=5, dropout=0.05
+  => ~680 trainable parameters
+
+Usage
+-----
+  from Transformer import GModel
+  model = GModel(vocab_size=20, d_model=20, num_heads=2, num_layers=1,
+                 d_ff=1, max_seq_length=5, dropout=0.05)
+
+  input_ids = torch.tensor([[1, 2, 3, 5, -1]])
+  output = model(input_ids, pad_token=-1)  # output: (batch, seq_len, vocab_size)
+
+The output is a tensor of logits with shape (batch_size, seq_len, vocab_size).
+
+Masking
+-------
+  The create_mask method produces a combined causal + padding mask:
+  1. Causal mask: Lower-triangular boolean matrix (prevents attending to future)
+  2. Padding mask: Boolean mask where pad tokens are False
+  3. Combined: causal_mask * pad_mask
+  Mask shape: (batch_size, 1, 1, seq_len) for broadcasting with attention scores

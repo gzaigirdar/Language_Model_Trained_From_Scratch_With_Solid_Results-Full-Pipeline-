@@ -20,7 +20,7 @@ model_config = {
 
 }
 
-tokenizer_path = 'Saved_tokenizer/t5_Tokenizer'
+tokenizer_path = 'Tokenizer/Saved_tokenizer/t5_Tokenizer'
 tokenizer = AutoTokenizer.from_pretrained(tokenizer_path,use_fast=True)
 def clean_text(text):
     text = text.lower()
@@ -32,7 +32,7 @@ def clean_text(text):
 
 
 
-model_path ="Saved_Models/Tiny_Stories_45m_285T_Pretrained/45m285T_pretrained.pth"
+model_path ="Saved_Models/Tiny_Stories_45m_285T/Story_45m_285T.pth"
 device = ('cuda' if torch.cuda.is_available() else 'cpu')
 builder = BuildModel()
 model = builder.createModel(model_config,Model_type='None')

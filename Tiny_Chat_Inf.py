@@ -18,7 +18,7 @@ model_config = {
         "FeedForward_size": 2000,
         "Context_size": 200
     }
-tokenizer_path = 'Saved_tokenizer/t5_Tokenizer'
+tokenizer_path = 'Tokenizer/Saved_tokenizer/t5_Tokenizer'
 tokenizer = AutoTokenizer.from_pretrained(tokenizer_path,use_fast=True)
 def clean_text(text):
     text = text.lower()
@@ -40,8 +40,8 @@ builder.load_weights(path=model_path)
 
 
 def gen_text(prompt,model,tokenizer,max_tokens=80,pad_token=0,temperature=0.0,top_k=0,device=device):
-    prompt = clean_text(prompt)
-    prompt = f"{tokenizer.bos_token} <user> {prompt} <bot> "
+    #prompt = clean_text(prompt)
+    #prompt = f"{tokenizer.bos_token} <user> {prompt} <bot> "
     tokenized_text = tokenizer(prompt,return_tensors='pt',add_special_tokens=False,return_attention_mask=False,padding=False,truncation=False,)
     input_ids = tokenized_text['input_ids']
     pad_index = tokenizer.pad_token
@@ -89,18 +89,24 @@ def gen_text(prompt,model,tokenizer,max_tokens=80,pad_token=0,temperature=0.0,to
         print(word, end=" ", flush=True)  
         time.sleep(0.07)  
     
+    return text
+    
 
 
 
 print('Hello! please enter a prompt to Chat')
 print('enter ## to exit the chat.')
+history = ''
 while True:
-    
     prompt = input('\nMe: \n')
     if prompt == '##':
         print('Bye!')
         break
-    else:
-        print('AI:')
-        gen_text(prompt,model,tokenizer,top_k=args.Top_K,temperature=args.Temp)
+    
+    prompt = clean_text(prompt)
+    history += f"{tokenizer.bos_token} <user> {prompt} <bot> "
+    
+    print('AI:')
+    bot_response = gen_text(history, model, tokenizer, top_k=args.Top_K, temperature=args.Temp)
+    history += bot_response + " "
     
