@@ -37,3 +37,10 @@ pip install -r requirements.txt
 
 Note: make sure you are inside the Project directory in the terminal before running any of the
 scripts. 
+
+Additionally, Top_K and Temperature can be passed in the command line for each 
+script. 
+Example: python Casual_chat_Inf.py –Top_K 20 –Temp 0.60 
+(double dash before the parameter name) 
+
+
